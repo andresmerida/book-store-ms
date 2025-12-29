@@ -1,0 +1,21 @@
+server:
+  port: 8081
+  shutdown: graceful
+
+spring:
+  application:
+    name: catalog-service
+  # db config
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:15432/catalog-db}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+
+management:
+  info:
+    git:
+      mode: full
+  endpoints:
+    web:
+      exposure:
+        include: "*"
