@@ -7,6 +7,7 @@ import dev.am.bookstore.domain.records.PagedResult;
 import dev.am.bookstore.domain.records.ProductDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.ProblemDetail;
 import org.springframework.test.context.jdbc.Sql;
 
 @Sql("/test-data.sql")
@@ -43,6 +44,23 @@ class ProductControllerTest extends AbstractIntegrationTest {
                     assert productDTO != null;
                     assertEquals("P111", productDTO.code());
                     assertEquals("A Game of Thrones", productDTO.name());
+                });
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenProductNotFound() {
+        restTestClient
+                .get()
+                .uri("/api/products/invalid_product_code")
+                .exchange()
+                .expectStatus()
+                .isNotFound()
+                .expectBody(ProblemDetail.class)
+                .value(problemDetail -> {
+                    assert problemDetail != null;
+                    assertEquals("Product not found", problemDetail.getTitle());
+                    assertEquals(404, problemDetail.getStatus());
+                    assertEquals("Product with code invalid_product_code not found", problemDetail.getDetail());
                 });
     }
 }
