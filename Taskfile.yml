@@ -4,6 +4,7 @@ vars:
   MVNW: '{{if eq .GOOS "windows"}}mvnw.cmd{{else}}./mvnw{{end}}'
   DC_DIR: "deployment"
   INFRA_DC_FILE: "{{.DC_DIR}}/docker-compose.yml"
+  APP_DC_FILE: "{{.DC_DIR}}/app.yml"
 
 tasks:
   default:
@@ -31,6 +32,18 @@ tasks:
       - task: stop_infra
       - task: sleep
       - task: start_infra
+  start:
+    cmds:
+      - "docker compose -f {{.INFRA_DC_FILE}} -f {{.APP_DC_FILE}} up -d"
+  stop:
+    cmds:
+      - "docker compose -f {{.INFRA_DC_FILE}} -f {{.APP_DC_FILE}} stop"
+      - "docker compose -f {{.INFRA_DC_FILE}} -f {{.APP_DC_FILE}} rm -f"
+  restart:
+    cmds:
+      - task: stop
+      - task: sleep
+      - task: start
   sleep:
     vars:
       DURATION: "{{default 5 .DURATION}}"
