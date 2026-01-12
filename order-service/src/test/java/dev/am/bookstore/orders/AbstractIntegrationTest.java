@@ -1,4 +1,4 @@
-package dev.am.bookstore;
+package dev.am.bookstore.orders;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.client.RestTestClient;
 import org.springframework.web.context.WebApplicationContext;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @Import(TestcontainersConfiguration.class)
 public class AbstractIntegrationTest {
     @Autowired
