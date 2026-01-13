@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "app")
 public record AppProperties(
         String name,
-        String catalogServiceUrl,
+        String catalogServiceBaseUrl,
         String orderEventsExchange,
         String newOrdersQueue,
         String deliveredOrdersQueue,
