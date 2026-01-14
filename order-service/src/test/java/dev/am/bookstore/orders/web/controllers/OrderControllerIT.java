@@ -1,15 +1,25 @@
 package dev.am.bookstore.orders.web.controllers;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+
+import com.github.tomakehurst.wiremock.client.WireMock;
 import dev.am.bookstore.orders.AbstractIntegrationTest;
 import dev.am.bookstore.orders.dto.OrderResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 
+@AutoConfigureMockMvc
 class OrderControllerIT extends AbstractIntegrationTest {
+    @Autowired
+    MockMvc mockMvc;
 
     @Test
     void shouldCreateOrder() {
+        mockGetProductByCode();
         String payload = """
                 {
                     "customer": {
@@ -27,9 +37,9 @@ class OrderControllerIT extends AbstractIntegrationTest {
                     },
                     "items": [
                         {
-                            "code": "p100",
-                            "name": "Product 1",
-                            "price": 25.50,
+                            "code": "P100",
+                            "name": "The Hunger Games",
+                            "price": 34.0,
                             "quantity": 1
                         }
                     ]
@@ -67,8 +77,8 @@ class OrderControllerIT extends AbstractIntegrationTest {
                     },
                     "items": [
                         {
-                            "code": "p100",
-                            "name": "Product 1",
+                            "code": "P100",
+                            "name": "The Hunger Games",
                             "price": 25.50,
                             "quantity": 1
                         }
@@ -83,5 +93,19 @@ class OrderControllerIT extends AbstractIntegrationTest {
                 .exchange()
                 .expectStatus()
                 .isBadRequest();
+    }
+
+    private void mockGetProductByCode() {
+        stubFor(WireMock.get(urlMatching("/api/products/P100"))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                        .withStatus(200)
+                        .withBody("""
+                                    {
+                                        "code": "P100",
+                                        "name": "The Hunger Games",
+                                        "price": 34.0
+                                    }
+                                """)));
     }
 }

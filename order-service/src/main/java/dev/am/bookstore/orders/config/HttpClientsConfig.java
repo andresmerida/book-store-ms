@@ -22,6 +22,10 @@ class HttpClientsConfig {
 
     @Bean
     RestClientHttpServiceGroupConfigurer groupConfigurer() {
+        /*
+         * Timeout Pattern
+         *  Set to 5 seconds a maximum amount of time a service will wait for a response before timing out.
+         */
         ClientHttpRequestFactory requestFactory = ClientHttpRequestFactoryBuilder.simple()
                 .withCustomizer(customizer -> {
                     customizer.setConnectTimeout(Duration.ofSeconds(5));

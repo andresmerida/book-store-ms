@@ -35,7 +35,7 @@ class OrderServiceImpl implements OrderService {
 
     private void validateOrder(CreateOrderRequest orderRequest) {
         for (OrderItemRequest item : orderRequest.items()) {
-            ProductDTO product = productClient.getProductByCodeWithErrorHandling(item.code());
+            ProductDTO product = productClient.getProductByCode(item.code());
             if (item.price().compareTo(product.price()) != 0) {
                 log.error("Invalid order: price of product {} does not match the price in the request", item.code());
                 throw new InvalidOrderException("Product price does not match the request price");
