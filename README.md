@@ -43,8 +43,8 @@ curl -X POST http://localhost:8080/api/orders \
     "items": [
         {
             "code": "P100",
-            "name": "Product 1",
-            "price": 25.50,
+            "name": "The Hunger Games",
+            "price": 34.0,
             "quantity": 1
         }
     ]
