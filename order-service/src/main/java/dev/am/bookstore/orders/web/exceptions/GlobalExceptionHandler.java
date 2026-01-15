@@ -30,7 +30,7 @@ class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         problemDetail.setType(BAD_REQUEST_TYPE);
         problemDetail.setProperty("service", SERVICE_NAME);
         problemDetail.setProperty("error_category", HttpStatus.BAD_REQUEST.getReasonPhrase());
-        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty("timestamp", Instant.now().toString());
         return problemDetail;
     }
 
@@ -41,7 +41,7 @@ class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         problemDetail.setType(NOT_FOUND_TYPE);
         problemDetail.setProperty("service", SERVICE_NAME);
         problemDetail.setProperty("error_category", HttpStatus.NOT_FOUND.getReasonPhrase());
-        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty("timestamp", Instant.now().toString());
 
         log.error("OrderNotFoundException -> Product not found: {}", ex.getMessage());
         return problemDetail;
@@ -54,9 +54,22 @@ class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         problemDetail.setType(HTTP_CLIENT_TYPE);
         problemDetail.setProperty("service", SERVICE_NAME);
         problemDetail.setProperty("error_category", "client generic error");
-        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty("timestamp", Instant.now().toString());
 
         log.error("ApiHttpClientsException -> {}", ex.getMessage());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(JsonMappingObjException.class)
+    ProblemDetail handleJsonMappingObjException(JsonMappingObjException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_CONTENT, ex.getMessage());
+        problemDetail.setTitle("Json Mapping Exception:");
+        problemDetail.setType(ISE_FOUND_TYPE);
+        problemDetail.setProperty("service", SERVICE_NAME);
+        problemDetail.setProperty("error_category", HttpStatus.UNPROCESSABLE_CONTENT.getReasonPhrase());
+        problemDetail.setProperty("timestamp", Instant.now().toString());
+        log.error("JsonMappingObjException -> {}", ex.getMessage(), ex.getCause());
+
         return problemDetail;
     }
 
@@ -67,7 +80,7 @@ class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         problemDetail.setType(NOT_FOUND_TYPE);
         problemDetail.setProperty("service", SERVICE_NAME);
         problemDetail.setProperty("error_category", HttpStatus.NOT_FOUND.getReasonPhrase());
-        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty("timestamp", Instant.now().toString());
         return problemDetail;
     }
 
@@ -86,7 +99,7 @@ class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         problemDetail.setProperty("errors", errors);
         problemDetail.setProperty("service", SERVICE_NAME);
         problemDetail.setProperty("error_category", HttpStatus.BAD_REQUEST.getReasonPhrase());
-        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty("timestamp", Instant.now().toString());
 
         return ResponseEntity.badRequest().body(problemDetail);
     }
@@ -99,7 +112,7 @@ class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         problemDetail.setType(ISE_FOUND_TYPE);
         problemDetail.setProperty("service", SERVICE_NAME);
         problemDetail.setProperty("error_category", "INTERNAL_SERVER_ERROR");
-        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty("timestamp", Instant.now().toString());
         log.error("Unhandled exception: {0}", e.fillInStackTrace());
         return problemDetail;
     }
