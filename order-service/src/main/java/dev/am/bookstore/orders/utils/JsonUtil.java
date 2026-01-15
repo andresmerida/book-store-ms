@@ -8,15 +8,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class JsonUtil {
 
-    private JsonUtil() {
-    }
+    private JsonUtil() {}
 
     public static String toJson(JsonMapper jsonMapper, Object obj) {
         try {
             return jsonMapper.writeValueAsString(obj);
         } catch (JacksonException e) {
-            throw new JsonMappingObjException("Failed toJson mapping object of type: " +
-                    (obj == null ? "null" : obj.getClass().getName()) , e);
+            throw new JsonMappingObjException(
+                    "Failed toJson mapping object of type: "
+                            + (obj == null ? "null" : obj.getClass().getName()),
+                    e);
         }
     }
 

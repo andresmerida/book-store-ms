@@ -2,11 +2,10 @@ package dev.am.bookstore.orders.domain;
 
 import dev.am.bookstore.orders.domain.enums.OrderEventType;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "order_events")
@@ -38,5 +37,4 @@ class OrderEventEntity {
     private LocalDateTime updatedAt;
 
     OrderEventEntity() {}
-
 }
