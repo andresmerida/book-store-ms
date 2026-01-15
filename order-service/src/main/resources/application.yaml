@@ -7,6 +7,8 @@ app:
   delivered-orders-queue: delivered-orders
   cancelled-orders-queue: cancelled-orders
   error-orders-queue: error-orders
+  publish-order-events-job-cron: "*/5 * * * * *"  # it means every 5 seconds
+  new-orders-job-cron: "*/10 * * * * *"
 
 server:
   port: 8082
@@ -29,6 +31,9 @@ spring:
     port: ${RABBITMQ_PORT:5672}
     username: ${RABBITMQ_USERNAME:guest}
     password: ${RABBITMQ_PASSWORD:guest}
+  jackson:
+    serialization:
+      indent-output: true
 
 ### Actuator Configuration ###
 management:
