@@ -1,0 +1,1 @@
+package dev.am.bookstore.web.practice.solid;
