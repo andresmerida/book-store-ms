@@ -1,0 +1,5 @@
+package dev.am.bookstore.web.practice.solid.isp;
+
+public interface Scanner {
+    void scanDocument();
+}
